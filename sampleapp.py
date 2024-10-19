@@ -14,10 +14,24 @@ def display_logo():
     st.sidebar.image("assets/acextic-logo.png", width=150)
 
 # Predefined users for Role-Based Access Control (Simulated Login)
+# Accessing credentials from secrets
 users = {
-    "admin": {"password": "admin123", "role": "Admin", "name": "Yaswanth", "id": "ADM001"},
-    "recruiter": {"password": "recruiter123", "role": "Recruiter", "name": "Kumar", "id": "REC002"}
+    "admin": {
+        "password": st.secrets["ADMIN_PASSWORD"],
+        "role": "Admin",
+        "name": "Yaswanth",
+        "id": "A001",
+        "photo": "assets/profile_photo.png"
+    },
+    "recruiter": {
+        "password": st.secrets["RECRUITER_PASSWORD"],
+        "role": "Recruiter",
+        "name": "Bob Recruiter",
+        "id": "REC001",
+        "photo": "bob_photo.png"
+    }
 }
+
 
 # Inject Custom CSS Styles
 st.markdown(
