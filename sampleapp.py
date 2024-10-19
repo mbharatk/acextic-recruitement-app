@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 #pip install matplotlib
+import matplotlib
+matplotlib.use('Agg')  # Non-interactive backend
 import matplotlib.pyplot as plt
 #pip install plotly
 import plotly.express as px
