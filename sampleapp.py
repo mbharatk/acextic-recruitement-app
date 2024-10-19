@@ -11,7 +11,7 @@ import os
 
 # Display Company Logo on Every Page
 def display_logo():
-    st.sidebar.image("assests/acextic-logo.png", width=150)
+    st.sidebar.image("assets/acextic-logo.png", width=150)
 
 # Predefined users for Role-Based Access Control (Simulated Login)
 users = {
