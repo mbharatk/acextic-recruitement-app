@@ -1,4 +1,4 @@
-import streamlit as st
+simport streamlit as st
 import pandas as pd
 #pip install matplotlib
 import matplotlib
@@ -11,7 +11,7 @@ import os
 
 # Display Company Logo on Every Page
 def display_logo():
-    st.sidebar.image("acextic-logo.png", width=150)
+    st.sidebar.image("assests/acextic-logo.png", width=150)
 
 # Predefined users for Role-Based Access Control (Simulated Login)
 users = {
