@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
+pip install matplotlib
 import matplotlib.pyplot as plt
+pip install plotly
 import plotly.express as px
 from io import StringIO
 import os
