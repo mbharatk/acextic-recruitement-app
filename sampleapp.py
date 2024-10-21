@@ -9,6 +9,9 @@ import plotly.express as px
 from io import StringIO
 import os
 
+# Set full page layout
+st.set_page_config(page_title="AI Recruitment Dashboard", layout="wide")
+
 # Display Company Logo on Every Page
 def display_logo():
     st.sidebar.image("assets/acextic-logo.png", width=150)
