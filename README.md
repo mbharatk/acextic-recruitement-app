@@ -1,1 +1,1 @@
-# acextic-recruitment-app
+# sample-recruitment-app
