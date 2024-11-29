@@ -32,13 +32,6 @@ users = {
         "name": "Bob Recruiter",
         "id": "REC001",
         "photo": "bob_photo.png"
-    },
-    "acextic": {
-        "password": st.secrets["ACEXTIC_PASSWORD"],
-        "role": "Acextic",
-        "name": "Acextic",
-        "id": "A001",
-        "photo": "org_photo.png"
     }
 }
 
