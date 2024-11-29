@@ -91,7 +91,7 @@ st.markdown(
 )
 
 # Sample Content with New Styles
-st.title("Acextic Recruitement")
+st.title(" Recruitment Portal")
 st.header("Welcome to the Recruitment Insights Dashboard")
 
 # Initialize session state for login and role management
@@ -200,7 +200,7 @@ if st.session_state["logged_in"]:
     st.markdown(
         """
         <footer style="text-align:center; padding:10px;">
-        © 2024 - Acextic Recruitment Platform | All rights reserved.
+        © 2024 - Bharat's Recruitment Platform | All rights reserved.
         </footer>
         """,
         unsafe_allow_html=True
