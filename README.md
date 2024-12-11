@@ -2,6 +2,24 @@
 
 This project enables users to streamline resume management, perform job description analysis, and find the best candidate matches using AI-driven technology. Below is a detailed guide for **setting up the tools**, even if you’re new to these technologies.
 
+## Team Members
+The following individuals contributed to this project:
+
+1. **Rishitha Addagada**  
+   Email: [sadda@uic.edu](mailto:sadda@uic.edu)
+
+2. **Yaswanth Mallavarapu**  
+   Email: [ymall2@uic.edu](mailto:ymall2@uic.edu)
+
+3. **Vipul Singh**  
+   Email: [vsing84@uic.edu](mailto:vsing84@uic.edu)
+
+4. **Lavanya Takale**  
+   Email: [ltaka@uic.edu](mailto:ltaka@uic.edu)
+
+5. **Krishna Yalamarthi**  
+   Email: [kyala@uic.edu](mailto:kyala@uic.edu)
+
 ---
 
 ## **Table of Contents**
