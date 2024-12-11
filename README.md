@@ -258,5 +258,7 @@ streamlit run app.py
 | OpenAI API quota exceeded     | Check your OpenAI usage or upgrade your plan.                           |
 | Service account JSON missing  | Ensure the file is in the project root and named `service_account.json.` |
 
+## License
 
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
