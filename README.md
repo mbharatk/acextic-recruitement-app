@@ -1,6 +1,6 @@
 # **AI-Powered Recruitment Portal**
 
-This project enables users to streamline resume management, perform job description analysis, and find the best candidate matches using AI-driven technology. Below is a detailed guide for **setting up the tools**, even if you’re new to these technologies.
+This project enables users to streamline resume management, perform job description analysis, and find the best candidate matches using AI-driven technology. Below is a detailed guide for **setting up the tools.**
 
 ---
 
