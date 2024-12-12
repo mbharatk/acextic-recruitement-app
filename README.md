@@ -293,43 +293,59 @@ streamlit run app.py
 
 ---
 
-## Backend Functionality Overview
+## Features
 
-### 1. Resume Parsing
-- **Purpose**: Extract structured information from raw resumes using OpenAI GPT-3.5 Turbo.
-- **Extracted Information**:
-  - Full Name.
-  - Educational Details (Degree, Institute).
-  - Employment Details (Company, Position, Start/End Dates, Description).
-  - Technical and Soft Skills.
-- **Input**: Raw text resumes stored in Google Drive.
-- **Output**: Extracted data saved as JSON files in `/content/drive/My Drive/Extracted_Resumes_final/`.
+### **1. Resume Collection and Storage**
+1. **File Upload**:
+   - Users can upload resumes via an intuitive interface supporting drag-and-drop or file picker functionality.
+   - Real-time feedback is provided for successful uploads and file processing.
 
-### 2. Embedding Generation
-- **Purpose**: Generate embeddings for each resume section (`education`, `employment`, `technical_skills`, `soft_skills`) using Hugging Face models.
-- **Usage**: Supports query embedding for job descriptions to find the best matching resumes.
+2. **Resume Parsing**:
+   - Uploaded resumes are automatically parsed using OpenAI GPT-3.5 Turbo.
+   - Key information such as name, education, employment history, and skills are extracted.
 
-### 3. Chunking and Vectorization
-- **Purpose**: Split resume data into meaningful chunks and assign metadata tags.
-- **Sections**: `education`, `employment`, `technical_skills`, and `soft_skills`.
+3. **Storage**:
+   - Parsed resumes are saved in Google Drive in JSON format for further processing.
+   - Raw resumes are stored in a separate directory for reference.
 
-### 4. Vector Database Integration
-- **Purpose**: Use Pinecone for storing and querying vector embeddings.
-- **Configuration**:
-  - **Index Name**: `capstone-indexed-chunks`.
-  - **Dimension**: 1536 (combined embeddings), 384 (section-specific embeddings).
-  - **Metric**: Cosine similarity.
-  - **Region**: `us-east-1`.
+---
 
-### 5. Resume Matching
-- **Purpose**: Match resumes to job descriptions using cosine similarity.
-- **Functionality**:
-  - Filters and thresholds to classify resumes as IT or Non-IT.
-  - Evaluates precision and recall metrics.
+### **2. Backend Processing and Embedding**
 
-### 6. Performance Evaluation
-- **Purpose**: Evaluate system performance using metrics like precision, recall, and similarity scores.
-- **Visualizations**: Generate precision-recall and threshold-precision curves.
+1. **Resume Embedding**:
+   - Parsed resumes are divided into meaningful chunks:
+     - `education`
+     - `employment`
+     - `technical_skills`
+     - `soft_skills`
+   - Each chunk is converted into a vector embedding using Hugging Face's `NoInstruct-small-Embedding-v0` model.
+
+2. **Metadata Assignment**:
+   - Metadata such as tags (`IT`, `Non-IT`, keywords) and filenames are generated for each chunk to improve search precision.
+
+3. **Storage in Pinecone**:
+   - Embeddings are stored in Pinecone, a cloud-based vector database.
+   - The index is configured for cosine similarity and deployed in the `us-east-1` region.
+   - Combined embeddings (all sections) and section-specific embeddings are stored for efficient matching.
+
+4. **Job Description Matching**:
+   - A job description provided by the user is embedded using the same Hugging Face model.
+   - The embedded query vector is compared with stored resume vectors in Pinecone using cosine similarity.
+   - Top matches are retrieved with their similarity scores and metadata.
+
+---
+
+### **3. Evaluation and Visualization**
+
+1. **Precision-Recall Analysis**:
+   - Evaluation metrics such as precision, recall, and Mean Reciprocal Rank (MRR) are computed for matching results.
+   - Precision-recall curves and threshold-based precision curves are visualized to assess system performance.
+
+2. **IT vs Non-IT Classification**:
+   - Resumes are classified as IT or Non-IT based on thresholds applied to similarity scores and metadata.
+
+3. **Interactive Adjustments**:
+   - Users can interactively adjust thresholds in the UI to refine the classification and matching accuracy.
 
 ---
 
