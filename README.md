@@ -258,6 +258,237 @@ streamlit run app.py
 | OpenAI API quota exceeded     | Check your OpenAI usage or upgrade your plan.                           |
 | Service account JSON missing  | Ensure the file is in the project root and named `service_account.json.` |
 
+---
+
+# Backend Implementation for AI-Driven Recruitment Tool
+
+## Tools and Frameworks Used
+
+### Programming Languages
+- **Python**: Version 3.8 or higher.
+
+### Libraries
+- **openai**: For GPT-based resume parsing and embedding generation.
+- **transformers**: For embedding generation using Hugging Face models.
+- **pinecone-client**: For storing and querying vector embeddings.
+- **pandas**: For data manipulation and analysis.
+- **scikit-learn**: For evaluation metrics like precision and recall and nearest neighbor search.
+- **tiktoken**: For token processing with OpenAI APIs.
+- **chromadb**: For managing embeddings in a lightweight database.
+
+### Models
+- **OpenAI GPT-3.5 Turbo**: For resume parsing.
+- **Hugging Face Model**: `NoInstruct-small-Embedding-v0` for embedding generation.
+
+### Databases
+- **Google Drive**: For storing raw resumes and extracted JSON files.
+- **Pinecone**: For indexing and querying vector embeddings.
+- **ChromaDB**: For managing embeddings and metadata.
+
+### Environment
+- **Google Colab**: For running the backend scripts and accessing Google Drive.
+
+### Visualization
+- **matplotlib**: For generating precision-recall curves and other plots.
+
+---
+
+## Backend Functionality Overview
+
+### 1. Resume Parsing
+- **Purpose**: Extract structured information from raw resumes using OpenAI GPT-3.5 Turbo.
+- **Extracted Information**:
+  - Full Name.
+  - Educational Details (Degree, Institute).
+  - Employment Details (Company, Position, Start/End Dates, Description).
+  - Technical and Soft Skills.
+- **Input**: Raw text resumes stored in Google Drive.
+- **Output**: Extracted data saved as JSON files in `/content/drive/My Drive/Extracted_Resumes_final/`.
+
+### 2. Embedding Generation
+- **Purpose**: Generate embeddings for each resume section (`education`, `employment`, `technical_skills`, `soft_skills`) using Hugging Face models.
+- **Usage**: Supports query embedding for job descriptions to find the best matching resumes.
+
+### 3. Chunking and Vectorization
+- **Purpose**: Split resume data into meaningful chunks and assign metadata tags.
+- **Sections**: `education`, `employment`, `technical_skills`, and `soft_skills`.
+
+### 4. Vector Database Integration
+- **Purpose**: Use Pinecone for storing and querying vector embeddings.
+- **Configuration**:
+  - **Index Name**: `capstone-indexed-chunks`.
+  - **Dimension**: 1536 (combined embeddings), 384 (section-specific embeddings).
+  - **Metric**: Cosine similarity.
+  - **Region**: `us-east-1`.
+
+### 5. Resume Matching
+- **Purpose**: Match resumes to job descriptions using cosine similarity.
+- **Functionality**:
+  - Filters and thresholds to classify resumes as IT or Non-IT.
+  - Evaluates precision and recall metrics.
+
+### 6. Performance Evaluation
+- **Purpose**: Evaluate system performance using metrics like precision, recall, and similarity scores.
+- **Visualizations**: Generate precision-recall and threshold-precision curves.
+
+---
+
+## Setup Instructions
+
+### Prerequisites
+1. Install Python (version 3.8 or higher).
+2. Install required libraries:
+   ```bash
+   pip install openai transformers pandas scikit-learn matplotlib pinecone-client chromadb tiktoken
+   ```
+
+### Step 1: Prepare the Environment
+1. Mount Google Drive if using Colab:
+    ```python
+    from google.colab import drive
+    drive.mount("/content/drive")
+    ```
+2. Place raw resume files in:
+    ```
+    /content/drive/My Drive/Resumes_text_files/
+    ```
+
+---
+
+### Step 2: Parse Resumes
+Run the script to parse resumes:
+```python
+process_resumes(
+    directory_path="/content/drive/My Drive/Resumes_text_files/",
+    output_directory="/content/drive/My Drive/Extracted_Resumes_final/"
+)
+```
+
+---
+
+## Step 3: Generate Embeddings
+
+Generate embeddings for parsed resumes:
+
+```python
+resume_vectors = process_resumes_and_vectorize(
+    folder_path="/content/drive/My Drive/Extracted_Resumes_final/"
+)
+```
+
+---
+
+## Step 4: Store Data in Pinecone
+
+### Initialize Pinecone and Create an Index
+To store embeddings, first initialize Pinecone and create an index:
+
+```python
+from pinecone import Pinecone, ServerlessSpec
+
+# Initialize Pinecone with your API key
+pc = Pinecone(api_key="your_pinecone_api_key")
+
+# Create an index with the specified configuration
+pc.create_index(
+    name="capstone-indexed-chunks",
+    dimension=1536,  # Dimensionality of the embedding vectors
+    metric="cosine",  # Metric used for similarity search
+    spec=ServerlessSpec(cloud="aws", region="us-east-1")  # Deployment configuration
+)
+```
+
+### Store Embeddings in the Index
+
+Once the index is ready, store the resume embeddings along with metadata:
+
+```python
+index = pc.Index("capstone-indexed-chunks")
+
+# Loop through the DataFrame to upload embeddings
+for idx, row in final_df.iterrows():
+    filename = row['filename']
+    combined_vector = np.concatenate([
+        np.mean(row['education'], axis=0),
+        np.mean(row['employment'], axis=0),
+        np.mean(row['technical_skills'], axis=0),
+        np.mean(row['soft_skills'], axis=0)
+    ]).tolist()
+
+    tags = row['tags'].split(",")  # Extract tags as metadata
+
+    # Upsert the vector and metadata into Pinecone
+    index.upsert([
+        (filename, combined_vector, {
+            "filename": filename,
+            "tags": tags
+        })
+    ])
+
+print("Embeddings successfully uploaded to Pinecone!")
+```
+
+#### Summary
+
+- **Purpose**: Pinecone is used to store high-dimensional vectors and perform similarity searches.
+- **Metadata**: Each embedding is stored with associated metadata (e.g., filename and tags).
+- **Index Configuration**:
+  - **Metric**: Cosine similarity.
+  - **Region**: `us-east-1`.
+- **Note**: Replace `"your_pinecone_api_key"` with your actual Pinecone API key.
+
+---
+
+## Step 5: Query and Match Resumes
+
+### Input a Job Description
+Provide a job description to generate a query embedding:
+
+```python
+job_description = "Looking for a candidate with a Master's degree in Computer Science"
+query_vector = get_embedding(job_description)
+```
+
+### Query the Database
+Use the query embedding to search the Pinecone index for the top matching resumes:
+
+```python
+results = index.query(
+    vector=query_vector,
+    top_k=5,  # Number of top matches to retrieve
+    include_metadata=True  # Include metadata like filename and tags in the results
+)
+```
+
+---
+
+## Step 6: Evaluate Performance
+
+### Run evaluation metrics:
+
+```python
+precision = precision_score(df_evl['Actual'], df_evl['Predicted'])
+recall = recall_score(df_evl['Actual'], df_evl['Predicted'])
+```
+
+### Generate a precision-recall curve:
+
+```python
+plt.plot(recalls, precisions, marker='o')
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+plt.title('Precision-Recall Curve')
+plt.show()
+```
+
+## Future Enhancements
+
+- **Integrate Real-Time Data Ingestion**: Enable automated ingestion of new resumes and job descriptions to keep the database up-to-date.
+- **Explore Advanced Contextual Embeddings**: Implement more sophisticated embedding models for improved semantic alignment between resumes and job descriptions.
+- **Develop a User-Friendly Interface**: Create an intuitive interface for recruiters to query the system and visualize matching results effectively.
+
+---
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
