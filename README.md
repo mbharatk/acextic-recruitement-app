@@ -249,14 +249,6 @@ streamlit run app.py
 ### **Matches**
 - Find and analyze the best candidates for a job description.
 
-## **Troubleshooting**
-
-| **Issue**                     | **Solution**                                                            |
-|-------------------------------|-------------------------------------------------------------------------|
-| Pinecone index not found      | Verify the index name and region in the `.env` file.                    |
-| Google Drive upload fails     | Ensure the folder is shared with the service account.                   |
-| OpenAI API quota exceeded     | Check your OpenAI usage or upgrade your plan.                           |
-| Service account JSON missing  | Ensure the file is in the project root and named `service_account.json.` |
 
 ---
 
@@ -502,6 +494,79 @@ plt.show()
 - **Integrate Real-Time Data Ingestion**: Enable automated ingestion of new resumes and job descriptions to keep the database up-to-date.
 - **Explore Advanced Contextual Embeddings**: Implement more sophisticated embedding models for improved semantic alignment between resumes and job descriptions.
 - **Develop a User-Friendly Interface**: Create an intuitive interface for recruiters to query the system and visualize matching results effectively.
+
+---
+
+## **Troubleshooting**
+
+| **Issue**                     | **Solution**                                                            |
+|-------------------------------|-------------------------------------------------------------------------|
+| Pinecone index not found      | Verify the index name and region in the `.env` file.                    |
+| Google Drive upload fails     | Ensure the folder is shared with the service account.                   |
+| OpenAI API quota exceeded     | Check your OpenAI usage or upgrade your plan.                           |
+| Service account JSON missing  | Ensure the file is in the project root and named `service_account.json.` |
+
+
+**if there are any issues with using the libraries or frameworks, make sure all the following imports are available in their respective codes, if not please add them**
+#### Backend Imports
+- The backend handles tasks like resume parsing, embedding generation, and Pinecone database integration.
+
+```python
+# General Utilities
+import os
+import json
+import numpy as np
+import pandas as pd
+
+# OpenAI API for resume parsing and embeddings
+import openai
+
+# Hugging Face Transformers for embedding generation
+from transformers import AutoModel, AutoTokenizer
+import torch
+
+# Pinecone for vector storage and querying
+from pinecone import Pinecone, ServerlessSpec
+
+# Evaluation Metrics and Visualization
+from sklearn.metrics import precision_score, recall_score
+import matplotlib.pyplot as plt
+
+# Tokenizer for OpenAI embeddings
+import tiktoken
+
+# ChromaDB for lightweight vector database management
+import chromadb
+
+# Scikit-learn for Nearest Neighbors
+from sklearn.neighbors import NearestNeighbors
+
+# Cosine similarity for vector comparisons
+from sklearn.metrics.pairwise import cosine_similarity
+```
+
+#### UI Imports
+- The UI focuses on building an interactive Streamlit app for uploading resumes, job description input, and result visualization.
+
+```python
+# Streamlit for building the interactive UI
+import streamlit as st
+
+# Pandas for data manipulation and display in the UI
+import pandas as pd
+
+# File handling for resume uploads
+import os
+import io
+
+# Visualization for displaying performance metrics
+import matplotlib.pyplot as plt
+
+# Integration with backend
+import numpy as np
+import json
+import requests  # If API calls to the backend are used
+```
 
 ---
 
