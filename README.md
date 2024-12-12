@@ -374,7 +374,7 @@ process_resumes(
 
 ---
 
-## Step 3: Generate Embeddings
+### Step 3: Generate Embeddings
 
 Generate embeddings for parsed resumes:
 
@@ -386,7 +386,7 @@ resume_vectors = process_resumes_and_vectorize(
 
 ---
 
-## Step 4: Store Data in Pinecone
+### Step 4: Store Data in Pinecone
 
 ### Initialize Pinecone and Create an Index
 To store embeddings, first initialize Pinecone and create an index:
@@ -447,7 +447,7 @@ print("Embeddings successfully uploaded to Pinecone!")
 
 ---
 
-## Step 5: Query and Match Resumes
+### Step 5: Query and Match Resumes
 
 ### Input a Job Description
 Provide a job description to generate a query embedding:
@@ -470,7 +470,7 @@ results = index.query(
 
 ---
 
-## Step 6: Evaluate Performance
+### Step 6: Evaluate Performance
 
 ### Run evaluation metrics:
 
@@ -489,7 +489,7 @@ plt.title('Precision-Recall Curve')
 plt.show()
 ```
 
-## Future Enhancements
+### Future Enhancements
 
 - **Integrate Real-Time Data Ingestion**: Enable automated ingestion of new resumes and job descriptions to keep the database up-to-date.
 - **Explore Advanced Contextual Embeddings**: Implement more sophisticated embedding models for improved semantic alignment between resumes and job descriptions.
