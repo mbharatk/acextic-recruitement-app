@@ -552,20 +552,40 @@ from sklearn.metrics.pairwise import cosine_similarity
 # Streamlit for building the interactive UI
 import streamlit as st
 
-# Pandas for data manipulation and display in the UI
+# Data manipulation and processing
 import pandas as pd
-
-# File handling for resume uploads
-import os
-import io
-
-# Visualization for displaying performance metrics
-import matplotlib.pyplot as plt
-
-# Integration with backend
 import numpy as np
+
+# Environment variable management
+from dotenv import load_dotenv
+
+# Pinecone for vector storage and querying
+from pinecone import Pinecone, ServerlessSpec
+
+# Google Generative AI (e.g., Bard) integration
+import google.generativeai as genai
+
+# File and cloud interaction
+import os
 import json
-import requests  # If API calls to the backend are used
+import tempfile
+
+# Hugging Face for embedding generation
+import torch
+from transformers import AutoModel, AutoTokenizer
+
+# Google APIs for Drive and Gmail
+from googleapiclient.discovery import build
+from google.oauth2 import service_account
+from googleapiclient.http import MediaFileUpload
+
+# Email functionality
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import smtplib
+
+# Visualization for displaying results
+import plotly.express as px
 ```
 
 ---
